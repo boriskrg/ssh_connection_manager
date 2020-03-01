@@ -3,8 +3,8 @@ Open and manage ssh sessions with keyring, rofi and yad.
 
 ### Dependencies
 - Python
-  - keyring
-  - pyperclip
+  - `keyring`
+  - `pyperclip`
 - Other
   - `yad`
   - `rofi`
