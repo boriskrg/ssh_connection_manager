@@ -10,6 +10,16 @@ KW_ADD = 'add'
 SERVICE_NAME = 'issh'
 ALIAS_NAME = 'alias'
 
+# TERMINAL_ARGS = [
+#     'gnome-terminal',
+#     '-e',
+# ]
+TERMINAL_ARGS = [
+    'konsole',
+    '--noclose',
+    '-e',
+]
+
 
 def get_opts() -> dict:
     opts = keyring.get_password(SERVICE_NAME, ALIAS_NAME)
@@ -74,12 +84,10 @@ def connect(info: dict) -> None:
         os.environ['___KEY___'] = info['k']
         connect_script_path = './connect_with_key.sh'
 
-    sp.Popen([
-        'konsole',
-        '--noclose',
-        '-e',
-        connect_script_path
-    ], stdout=sp.DEVNULL, stderr=sp.DEVNULL)
+    sp.Popen(
+        [*TERMINAL_ARGS, connect_script_path],
+        stdout=sp.DEVNULL, stderr=sp.DEVNULL
+    )
 
 
 def edit_credentials(alias: str, info: dict) -> None:
