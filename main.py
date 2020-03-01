@@ -9,6 +9,7 @@ import keyring
 KW_ADD = 'add'
 SERVICE_NAME = 'issh'
 ALIAS_NAME = 'alias'
+ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
 
 # TERMINAL_ARGS = [
 #     'gnome-terminal',
@@ -75,17 +76,17 @@ def add_credentials() -> None:
 
 
 def connect(info: dict) -> None:
-    connect_script_path = './connect_with_pass.sh'
+    connect_script_path = 'connect_with_pass.sh'
     os.environ['___HOST___'] = info['h']
     os.environ['___USER___'] = info['u']
     os.environ['___PASS___'] = info.get('p')
 
     if info.get('k'):
         os.environ['___KEY___'] = info['k']
-        connect_script_path = './connect_with_key.sh'
+        connect_script_path = 'connect_with_key.sh'
 
     sp.Popen(
-        [*TERMINAL_ARGS, connect_script_path],
+        [*TERMINAL_ARGS, os.path.join(ROOT_PATH, connect_script_path)],
         stdout=sp.DEVNULL, stderr=sp.DEVNULL
     )
 
