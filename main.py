@@ -48,12 +48,13 @@ def rofi(mesg: str, opts: list = []) -> str:
 
 def show_error(mesg: str) -> None:
     mesg = '\n'.join([mesg[c:c+50] for c in range(0, len(mesg), 50)])
-    sp.Popen(['yad', '--error', f'--text={mesg}'])
+    sp.Popen(['yad', '--title=Error', '--error', f'--text={mesg}'])
 
 
 def add_credentials() -> None:
     a, h, u, p, k = check_output_safe([
         'yad',
+        '--title=Add new SSH connection',
         '--form',
         '--field=Alias',
         '--field=Host',
@@ -94,6 +95,7 @@ def connect(info: dict) -> None:
 def edit_credentials(alias: str, info: dict) -> None:
     a, h, u, p, k = check_output_safe([
         'yad',
+        f'--title=Edit {alias}',
         '--form',
         f'--field=Alias', f'{alias}',
         f'--field=Host', f'{info["h"]}',
