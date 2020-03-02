@@ -8,5 +8,6 @@ Open and manage ssh sessions with keyring, rofi and yad.
 - Other
   - `yad`
   - `rofi`
+  - `sshpass`
   - keyring daemon
   
