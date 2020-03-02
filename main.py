@@ -52,7 +52,7 @@ def show_error(mesg: str) -> None:
 
 
 def add_credentials() -> None:
-    a, h, u, p, k = check_output_safe([
+    res = check_output_safe([
         'yad',
         '--title=Add new SSH connection',
         '--form',
@@ -62,6 +62,10 @@ def add_credentials() -> None:
         '--field=Password::h',
         '--field=Key::fl',
     ])
+    if not res:
+        return
+
+    a, h, u, p, k = res
 
     opts = get_opts()
     if a in opts:
@@ -93,7 +97,7 @@ def connect(info: dict) -> None:
 
 
 def edit_credentials(alias: str, info: dict) -> None:
-    a, h, u, p, k = check_output_safe([
+    res = check_output_safe([
         'yad',
         f'--title=Edit {alias}',
         '--form',
@@ -103,7 +107,10 @@ def edit_credentials(alias: str, info: dict) -> None:
         f'--field=Password::h', f'{info["p"]}',
         f'--field=Key::fl', f'{info.get("k")}',
     ])
+    if not res:
+        return
 
+    a, h, u, p, k = res
     k = k if os.path.isfile(k) else ''
 
     if a != alias:
