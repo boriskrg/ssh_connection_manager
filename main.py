@@ -80,11 +80,12 @@ def add_credentials() -> None:
     keyring.set_password(SERVICE_NAME, ALIAS_NAME, opts)
 
 
-def connect(info: dict) -> None:
+def connect(alias: str, info: dict) -> None:
     connect_script_path = 'connect_with_pass.sh'
     os.environ['___HOST___'] = info['h']
     os.environ['___USER___'] = info['u']
     os.environ['___PASS___'] = info.get('p')
+    os.environ['___ALIAS___'] = alias 
 
     if info.get('k'):
         os.environ['___KEY___'] = info['k']
@@ -174,7 +175,7 @@ if __name__ == '__main__':
 
         if res == 'CONNECT':
             try:
-                connect(info)
+                connect(alias, info)
             except Exception as e:
                 show_error(str(e))
         elif res == 'EDIT':
