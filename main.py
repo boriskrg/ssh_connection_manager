@@ -4,23 +4,10 @@ import os
 import json
 import subprocess as sp
 import keyring
+from config import *
 
 
-KW_ADD = 'add'
-SERVICE_NAME = 'issh'
-ALIAS_NAME = 'alias'
 ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
-
-# TERMINAL_ARGS = [
-#     'gnome-terminal',
-#     '-e',
-# ]
-TERMINAL_ARGS = [
-    'konsole',
-    '--noclose',
-    '-e',
-]
-
 
 def get_opts() -> dict:
     opts = keyring.get_password(SERVICE_NAME, ALIAS_NAME)
@@ -41,7 +28,7 @@ def rofi(mesg: str, opts: list = []) -> str:
     if not opts:
         mesg = 'No options'
     options = sp.Popen(['echo', '\n'.join(opts)], stdout=sp.PIPE)
-    dmenu = sp.Popen(['rofi', '-dmenu', '-p', mesg], stdin=options.stdout, stdout=sp.PIPE)
+    dmenu = sp.Popen([*ROFI_ARGS, mesg], stdin=options.stdout, stdout=sp.PIPE)
     options.stdout.close()
     return dmenu.communicate()[0].decode().strip()
 
@@ -162,7 +149,6 @@ if __name__ == '__main__':
         keyring.get_keyring()
 
         data = get_opts()
-
         if not (alias := rofi('SSH', data)):
             sys.exit(1)
         if alias.lower() == KW_ADD.lower():
