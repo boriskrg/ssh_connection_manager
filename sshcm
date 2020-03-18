@@ -119,9 +119,17 @@ def edit_credentials(alias: str, info: dict) -> None:
 
 def copy_credentials(alias: str, info: dict) -> None:
     creds = '\n'.join(info.values())
-    import pyperclip
-    pyperclip.copy(f'{alias}\n{creds}')
-    sp.Popen(['notify-send', 'SSHControl', 'Credentials copied to clipboard'], stderr=sp.DEVNULL)
+    #import pyperclip
+    #pyperclip.copy(f'{alias}\n{creds}')
+    #sp.Popen(['notify-send', 'SSHControl', 'Credentials copied to clipboard'], stderr=sp.DEVNULL)
+    res = check_output_safe([
+        'yad',
+        '--title=Credentials',
+        '--form',
+        f'--field={alias}:TXT', creds,
+        '--height', '150'
+    ])
+    
 
 
 def check_output_safe(params: list) -> str:
